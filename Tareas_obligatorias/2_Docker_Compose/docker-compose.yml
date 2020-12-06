@@ -1,0 +1,19 @@
+version: "3"
+services:
+  couchdb:
+    container_name: couchdb
+    image: couchdb:latest
+    restart: always
+    ports:
+      - 5985:5984
+    environment:
+      - 'COUCHDB_USER=admin'
+      - 'COUCHDB_PASSWORD=admin'
+  app-client:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 5986:5984
+    depends_on:
+      - couchdb

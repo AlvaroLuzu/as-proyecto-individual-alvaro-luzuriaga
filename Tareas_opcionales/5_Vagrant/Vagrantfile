@@ -1,0 +1,19 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+Vagrant.configure("2") do |config|
+
+	config.vm.box = "ubuntu/trusty64"
+	config.vm.network "forwarded_port", guest: 5984, host: 5985, host_ip: "127.0.0.1"
+	config.vm.synced_folder "C:/Users/Alvaro/Desktop", "/home/vagrant/shared_folder"
+
+	config.vm.provider "virtualbox" do |vb|
+		vb.memory = "2048"
+		vb.cpus = 2
+	end
+
+	config.vm.provision "shell", inline: <<-SHELL
+		sudo apt-get update
+		sudo apt-get install -y couchdb
+		sudo service couchdb restart
+	SHELL
+end
